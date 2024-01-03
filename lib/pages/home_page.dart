@@ -5,6 +5,7 @@ import 'package:online_shopping/provider/items_provider.dart';
 import 'package:provider/provider.dart';
 
 import 'cart_page.dart';
+import 'details_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -21,8 +22,8 @@ class HomePage extends StatelessWidget {
           ),
         ),
         title: Text(
-          'Online shopping',
-          style: GoogleFonts.cinzel(fontSize: 25),
+          'ቦንዳ ይሸምቱ',
+          style: GoogleFonts.cinzel(fontSize: 25, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
@@ -40,6 +41,14 @@ class HomePage extends StatelessWidget {
               ),
             ),
             SizedBox(height: 10),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Categories',
+                style: TextStyle(fontSize: 20),
+              ),
+            ),
+            SizedBox(height: 20),
             Expanded(
               child: Consumer<ItemsProvider>(
                 builder: (context, value, child) {
@@ -57,14 +66,9 @@ class HomePage extends StatelessWidget {
                         price: value.getItems[index][2],
                         title: value.getItems[index][0],
                         onPressed: () {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('item added'),
-                              duration: Duration(milliseconds: 500),
-                            ),
-                          );
-                          Provider.of<ItemsProvider>(context, listen: false)
-                              .addCarts(index);
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) =>
+                                  DetailsPage(indexCome: index)));
                         },
                       );
                     },
@@ -75,11 +79,15 @@ class HomePage extends StatelessWidget {
           ],
         ),
       ),
-      drawer: Drawer(
-        backgroundColor: Colors.blue[100],
+      drawer: Hero(
+        transitionOnUserGestures: true,
+        tag: 'DemoTag',
+        child: Drawer(
+          backgroundColor: Colors.blue[100],
+        ),
       ),
-      endDrawer: EndDrawerButton(),
       floatingActionButton: FloatingActionButton(
+          backgroundColor: Colors.red[100],
           child: Icon(Icons.card_travel),
           onPressed: () {
             Navigator.of(context)
@@ -88,3 +96,6 @@ class HomePage extends StatelessWidget {
     );
   }
 }
+
+//  Provider.of<ItemsProvider>(context, listen: false)
+//                               .addCarts(index);

@@ -16,28 +16,36 @@ class ItemComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Container(
       decoration: BoxDecoration(
-          color: color[100], borderRadius: BorderRadius.circular(15)),
+          border: Border.all(color: Colors.blue.shade100),
+          borderRadius: BorderRadius.circular(15)),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          // Image.asset(
-          //   'images/suri.jpg',
-          //   height: 35,
-          // )
-          Icon(Icons.apple),
-          Text(title),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: color,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15)),
+          Expanded(
+            child: Image.asset(
+              image,
             ),
-            onPressed: onPressed,
-            child: Text(
-              '\$ $price',
-              style: TextStyle(color: Colors.white),
+          ),
+          Text(title),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SizedBox(
+              height: 25,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: color,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15)),
+                ),
+                onPressed: onPressed,
+                child: Text(
+                  'Visit',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
             ),
           )
         ],

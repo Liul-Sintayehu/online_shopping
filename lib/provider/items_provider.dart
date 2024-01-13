@@ -131,4 +131,9 @@ class Item {
   final color;
 
   Item(this.id, this.title, this.image, this.price, this.color);
+  @override
+  String toString() {
+    // TODO: implement toString
+    return id;
+  }
 }

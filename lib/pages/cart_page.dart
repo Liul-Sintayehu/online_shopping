@@ -1,10 +1,31 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:online_shopping/provider/items_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
 
 class CartPage extends StatelessWidget {
-  const CartPage({super.key});
+  CartPage({super.key});
+
+  // sendOrder() async {
+  //   final uri =
+  //       Uri.parse('https://restorant-backend-i0ix.onrender.com/addorder');
+  //   var response = await http.post(
+  //     uri,
+  //     body: {
+  //       "title": widget.title,
+  //       "price": widget.price,
+  //       "amount": order.toString(),
+  //       "table": _table.text
+  //     },
+  //   );
+  //   print(response);
+  // }
+  var phone = TextEditingController();
+  var address = TextEditingController();
+  double price = 0.0;
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +37,6 @@ class CartPage extends StatelessWidget {
         backgroundColor: Colors.white,
         body: Consumer<ItemsProvider>(
           builder: (context, value, child) {
-            double price = 0.0;
             for (int i = 0; i < value.getCarts.length; i++) {
               price += double.parse(value.getCarts[i].price);
             }
@@ -73,14 +93,16 @@ class CartPage extends StatelessWidget {
                                       children: [
                                         Text('Enter informations'),
                                         SizedBox(height: 15),
-                                        const TextField(
+                                        TextField(
+                                          controller: phone,
                                           decoration: InputDecoration(
                                             border: OutlineInputBorder(),
                                             labelText: 'Enter phone number',
                                           ),
                                         ),
                                         SizedBox(height: 15),
-                                        const TextField(
+                                        TextField(
+                                          controller: address,
                                           decoration: InputDecoration(
                                             border: OutlineInputBorder(),
                                             labelText: 'Enter Address',
@@ -100,9 +122,42 @@ class CartPage extends StatelessWidget {
                                                                   .symmetric(
                                                                   vertical:
                                                                       15)),
-                                                  onPressed: () {
-                                                    print(
-                                                        'sending $price to apis');
+                                                  onPressed: () async {
+                                                    //api
+
+                                                    final uri = Uri.parse(
+                                                        'https://shopping-backend-njou.onrender.com/addorder');
+                                                    var response =
+                                                        await http.post(
+                                                      uri,
+                                                      body: {
+                                                        "phone": phone.text,
+                                                        "address": address.text,
+                                                        "items": value.getCarts
+                                                            .toString(),
+                                                        "price":
+                                                            price.toString()
+                                                      },
+                                                    );
+                                                    showDialog(
+                                                        context: context,
+                                                        builder: (context) {
+                                                          return AlertDialog(
+                                                            title: Text(
+                                                                'Ordered successfully!!!'),
+                                                            actions: [
+                                                              TextButton(
+                                                                  onPressed:
+                                                                      () {
+                                                                    Navigator.of(
+                                                                            context)
+                                                                        .pop();
+                                                                  },
+                                                                  child: Text(
+                                                                      'Ok'))
+                                                            ],
+                                                          );
+                                                        });
                                                   },
                                                   child: Text(
                                                     'Order',

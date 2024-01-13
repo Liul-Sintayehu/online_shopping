@@ -48,7 +48,7 @@ class DetailsPage extends StatelessWidget {
                               ),
                             );
                             Provider.of<ItemsProvider>(context, listen: false)
-                                .addSuri(index);
+                                .addCart(index, indexCome);
                           },
                         );
                       }),
